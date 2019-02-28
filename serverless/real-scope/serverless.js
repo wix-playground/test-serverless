@@ -6,6 +6,6 @@ module.exports = (functionsBuilder) =>
       const result = await ctx.rpcClient(wix.adi.api.waas.v1.SiteService, '@wix/adi-waas-platformized-api').clear(ctx.aspects, {instanceId: 'instanceId'});
       return result;
     })
-    .addWebFunction('GET', '/', async (ctx, req) => {
+    .addWebFunction('GET', '/get', async (ctx, req) => {
       return {version: 1};
     });
