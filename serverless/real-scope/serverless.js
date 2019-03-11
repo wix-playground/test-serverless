@@ -7,5 +7,5 @@ module.exports = (functionsBuilder) =>
       return result;
     })
     .addWebFunction('GET', '/get', async (ctx, req) => {
-      return {version: 3};
+      return {version: 3, a: 1};
     });
