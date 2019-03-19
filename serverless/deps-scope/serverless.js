@@ -1,9 +1,8 @@
-const {FullHttpResponse} = require('@wix/serverless-api');
-const moment = require('moment');
+const dayjs = require('dayjs');
 
 module.exports = (functionsBuilder) =>
   functionsBuilder
-    .withNamespace('moment')
+    .withNamespace('dayjs')
     .addWebFunction('GET', '/now', async (ctx, req) => {
-      return {date: moment().format()};
+      return {date: dayjs('2018-08-08')};
     });
