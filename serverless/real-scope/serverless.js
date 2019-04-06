@@ -23,7 +23,7 @@ module.exports = (functionsBuilder) =>
   functionsBuilder
     .withNamespace('example')
     .addWebFunction('POST', '/', async (ctx, req) => {
-      const val = {accountId: req.params.accountId, description};
+      const val = {accountId: req.query.accountId, description};
       console.log('!!!!!!' + JSON.stringify(val));  
       await PaymentServicesWeb().OrderService()(ctx.aspects).create(val);
       await ctx.datastore.put('data', {val: 'value'});
