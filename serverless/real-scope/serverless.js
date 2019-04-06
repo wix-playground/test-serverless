@@ -1,5 +1,5 @@
 const {FullHttpResponse} = require('@wix/serverless-api');
-const {PaymentServicesWeb, OrderType, OrderItemCategory} = require('@wix/ambassador-payment-services-web/rpc');
+const {PaymentServicesWeb, OrderType, OrderItemCategory} = require('@wix/ambassador-payment-services-web');
 
 const description = {
   verticalOrderId: 'verticalOrderId',
@@ -23,7 +23,9 @@ module.exports = (functionsBuilder) =>
   functionsBuilder
     .withNamespace('example')
     .addWebFunction('POST', '/', async (ctx, req) => {
-      await PaymentServicesWeb().OrderService()(ctx.aspects).create({accountId: req.params.accountId, description});
+      const val = {accountId: req.params.accountId, description};
+      console.log('!!!!!!' + JSON.stringify(val));  
+      await PaymentServicesWeb().OrderService()(ctx.aspects).create(val);
       await ctx.datastore.put('data', {val: 'value'});
       return new FullHttpResponse({status: 204, body: {}});
     })
