@@ -23,13 +23,12 @@ module.exports = (functionsBuilder) =>
   functionsBuilder
     .withNamespace('example')
     .addWebFunction('POST', '/', async (ctx, req) => {
-      const val = {accountId: req.query.accountId, description};
-      console.log('!!!!!!' + JSON.stringify(val));  
-      await PaymentServicesWeb().OrderService()(ctx.aspects).create(val);
-      await ctx.datastore.put('data', {val: 'value'});
-      return new FullHttpResponse({status: 204, body: {}});
+      const request = {accountId: req.query.accountId, description};
+      const {order} = await PaymentServicesWeb().OrderService()(ctx.aspects).create(request);
+      await ctx.datastore.put('data', order);
+      return new FullHttpResponse({status: 201, body: {}});
     })
     .addWebFunction('GET', '/get', async (ctx, req) => {
-      const value = await ctx.datastore.get('data');
-      return {version: 8, message: 'message', ...value};
+      const {id} = await ctx.datastore.get('data');
+      return {id};
     });
