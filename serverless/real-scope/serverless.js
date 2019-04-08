@@ -1,4 +1,4 @@
-const {FullHttpResponse} = require('@wix/serverless-api');
+const {FullHttpResponse, HttpError} = require('@wix/serverless-api');
 const {PaymentServicesWeb, OrderType, OrderItemCategory} = require('@wix/ambassador-payment-services-web');
 
 const description = {
@@ -28,10 +28,13 @@ module.exports = (functionsBuilder) =>
   functionsBuilder
     .withNamespace('example')
     .addWebFunction('POST', '/', async (ctx, req) => {
+      if (!req.query.accountId) {
+        throw new HttpError({status: 400});
+      }
       const request = {accountId: req.query.accountId, description, urls};
       const {order} = await PaymentServicesWeb().OrderService()(ctx.aspects).create(request);
       await ctx.datastore.put('data', order);
-      return new FullHttpResponse({status: 201, body: {}});
+      return new FullHttpResponse({status: 201, body: {id: order.id}});
     })
     .addWebFunction('GET', '/get', async (ctx, req) => {
       const {id} = await ctx.datastore.get('data');
