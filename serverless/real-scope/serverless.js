@@ -19,11 +19,16 @@ const description = {
   }]
 };
 
+const urls = {
+  eventHook: 'rpc',
+  simpleReturnUrl: 'http://google.com'
+};
+
 module.exports = (functionsBuilder) =>
   functionsBuilder
     .withNamespace('example')
     .addWebFunction('POST', '/', async (ctx, req) => {
-      const request = {accountId: req.query.accountId, description};
+      const request = {accountId: req.query.accountId, description, urls};
       const {order} = await PaymentServicesWeb().OrderService()(ctx.aspects).create(request);
       await ctx.datastore.put('data', order);
       return new FullHttpResponse({status: 201, body: {}});
