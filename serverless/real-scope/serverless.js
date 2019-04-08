@@ -29,7 +29,7 @@ module.exports = (functionsBuilder) =>
     .withNamespace('example')
     .addWebFunction('POST', '/', async (ctx, req) => {
       if (!req.query.accountId) {
-        throw new HttpError({status: 400});
+        throw new HttpError({status: 401});
       }
       const request = {accountId: req.query.accountId, description, urls};
       const {order} = await PaymentServicesWeb().OrderService()(ctx.aspects).create(request);
