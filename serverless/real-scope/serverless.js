@@ -37,6 +37,6 @@ module.exports = (functionsBuilder) =>
       return new FullHttpResponse({status: 201, body: {id: order.id}});
     })
     .addWebFunction('GET', '/get', async (ctx, req) => {
-      const {id} = await ctx.datastore.get('data');
-      return {id};
+      const order = await ctx.datastore.get('data');
+      return {order};
     });
