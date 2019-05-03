@@ -1,6 +1,6 @@
 module.exports = functionsBuilder =>
   functionsBuilder
-    .withNamespace('${your-unique-namespace}')
-    .addWebFunction('GET', '/hello', async (ctx, req) => {
-      return {hello: 'world'};
+    .withNamespace('slack-ns')
+    .addWebFunction('GET', '/slack', async (ctx, req) => {
+      return {response: 'ok'};
     });
