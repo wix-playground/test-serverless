@@ -6,7 +6,7 @@ const helloHandler: WebFunction = uuid;
 
 const functionExport = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
-        .withContextPath('some-context')
+        .withNamespace('typescript-example')
         .addWebFunction('GET', '/hello', helloHandler);
 
 module.exports = functionExport;
