@@ -1,9 +1,12 @@
-import {FunctionsBuilder} from '@wix/serverless-api';
+import * as uuid from 'uuid/v4';
+import { FunctionsBuilder } from '@wix/serverless-api/src/http/FunctionsBuilder';
+import { WebFunction } from '@wix/serverless-api/src/http/WebFunction';
 
+const helloHandler: WebFunction = uuid;
 
-export = (functionsBuilder: FunctionsBuilder) =>
+const functionExport = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
-        .withNamespace('typescript-example')
-        .addWebFunction('GET', '/', async (ctx, req) => {
-            return {version: 1};
-        });
+        .withContextPath('some-context')
+        .addWebFunction('GET', '/hello', helloHandler);
+
+module.exports = functionExport;
