@@ -26,7 +26,6 @@ const urls = {
 
 module.exports = (functionsBuilder) =>
   functionsBuilder
-    .withNamespace('example')
     .addWebFunction('POST', '/', async (ctx, req) => {
       if (!req.query.accountId) {
         throw new HttpError({status: 401});

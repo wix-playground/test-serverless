@@ -2,13 +2,12 @@ const {expect} = require('chai');
 const {app, whenCalled} = require('@wix/serverless-testkit');
 const axios = require('axios');
 const {PaymentServicesWeb, OrderType, OrderItemCategory} = require('@wix/ambassador-payment-services-web/rpc');
-const long = require('long');
 
 describe('example', () => {
 
   const testkit = app('real-scope').beforeAndAfter(20000);
 
-  const accountId = 'accountId'
+  const accountId = 'accountId';
   const orderToCreate = {
     accountId,
     description: {
@@ -32,13 +31,13 @@ describe('example', () => {
       eventHook: 'rpc',
       simpleReturnUrl: 'http://google.com'
     }
-  }
+  };
 
   it('should create order in cashier', async () => {
     const cashierStub = testkit.ambassador.createStub(PaymentServicesWeb);
     cashierStub.OrderService().create.when(orderToCreate).resolve({order: {id: 'order-id'}});
 
-    const url = testkit.getUrl(`/serverless/example?accountId=${accountId}`);
+    const url = testkit.getUrl(`/?accountId=${accountId}`);
     const res = await axios.post(url, {});
 
     expect(res.status).to.equal(201);
@@ -46,7 +45,7 @@ describe('example', () => {
   });
 
   it('should fail with 400 if accountId is not provided', async () => {
-    const res = await axios.post(testkit.getUrl(`/serverless/example`), {}, {validateStatus: () => true});
+    const res = await axios.post(testkit.getUrl(`/`), {}, {validateStatus: () => true});
     expect(res.status).to.equal(400);
   })
 });
