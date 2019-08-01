@@ -1,0 +1,12 @@
+{
+  "name": "deps-scope",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@wix/ambassador-payment-services-web": "latest"
+  }
+}

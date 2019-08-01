@@ -1,7 +1,6 @@
 const {expect} = require('chai');
 const {app} = require('@wix/serverless-testkit');
 const axios = require('axios');
-const dayjs = require('dayjs');
 
 describe('example', () => {
 
@@ -12,6 +11,6 @@ describe('example', () => {
     const res = await axios.get(testkit.getUrl(`/now`));
 
     expect(res.status).to.equal(200);
-    expect(res.data).to.deep.equal({date: dayjs('2018-08-08')});
+    expect(res.data).to.deep.equal({date: "2018-08-08T00:00:00.000Z"});
   });
 });

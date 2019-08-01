@@ -1,7 +1,7 @@
 const {expect} = require('chai');
 const {app, whenCalled} = require('@wix/serverless-testkit');
 const axios = require('axios');
-const {PaymentServicesWeb, OrderType, OrderItemCategory} = require('@wix/ambassador-payment-services-web/rpc');
+const {PaymentServicesWeb, OrderDescriptionOrderType, V2OrderItemOrderItemCategory} = require('@wix/ambassador-payment-services-web/rpc');
 
 describe('example', () => {
 
@@ -15,7 +15,7 @@ describe('example', () => {
       amount: 123.32,
       noShipping: false,
       currency: 'USD',
-      type: OrderType.ONE_TIME,
+      type: OrderDescriptionOrderType.ONE_TIME,
       externalData: {},
       items: [{
         name: 'item',
@@ -24,7 +24,7 @@ describe('example', () => {
         price: 123.32,
         weightInKg: 1.0,
         id: 'item',
-        category: OrderItemCategory.PHYSICAL
+        category: V2OrderItemOrderItemCategory.PHYSICAL
       }]
     },
     urls: {
