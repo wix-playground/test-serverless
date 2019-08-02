@@ -44,8 +44,8 @@ describe('example', () => {
     expect(res.data).to.deep.equal({id: 'order-id'});
   });
 
-  it('should fail with 400 if accountId is not provided', async () => {
+  it('should fail with 401 if accountId is not provided', async () => {
     const res = await axios.post(testkit.getUrl(`/`), {}, {validateStatus: () => true});
-    expect(res.status).to.equal(400);
+    expect(res.status).to.equal(401);
   })
 });
