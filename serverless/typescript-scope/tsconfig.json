@@ -1,3 +1,4 @@
 {
-  "files": ["serverless.ts"]
+  "files": ["serverless.ts"],
+  "lib": ["dom", "es2016", "esnext"]
 }
