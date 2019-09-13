@@ -1,4 +1,3 @@
 {
-  "files": ["serverless.ts"],
-  "types":[]
+  "files": ["serverless.ts"]
 }
