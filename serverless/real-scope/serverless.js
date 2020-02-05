@@ -1,12 +1,12 @@
 const {FullHttpResponse, HttpError} = require('@wix/serverless-api');
-const {PaymentServicesWeb, OrderDescriptionOrderType, V2OrderItemOrderItemCategory} = require('@wix/ambassador-payment-services-web');
+const {PaymentServicesWeb, OrderType, OrderItemCategory} = require('@wix/ambassador-payment-services-web');
 
 const description = {
   verticalOrderId: 'verticalOrderId',
   amount: 123.32,
   noShipping: false,
   currency: 'USD',
-  type: OrderDescriptionOrderType.ONE_TIME,
+  type: OrderType.OneTime,
   externalData: {},
   items: [{
     name: 'item',
@@ -15,7 +15,7 @@ const description = {
     price: 123.32,
     weightInKg: 1.0,
     id: 'item',
-    category: V2OrderItemOrderItemCategory.PHYSICAL
+    category: OrderItemCategory.PHYSICAL
   }]
 };
 
