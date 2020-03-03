@@ -7,6 +7,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wix/ambassador-payment-services-web": "latest"
+    "@wix/ambassador-payment-services-web": "1.0.553"
   }
 }
