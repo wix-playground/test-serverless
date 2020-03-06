@@ -3,7 +3,7 @@ const topic = 'serverless-deployments-to-build';
 
 module.exports = (functionsBuilder) =>
   functionsBuilder
-    .addWebFunction('GET', '/:ogr/:repo/:scope/:ref', async (ctx) => {
+    .addWebFunction('GET', '/:ogr/:repo/:scope/:ref', async (ctx, req) => {
       const message = {
            deployment:{
               ogr: req.params.org,
