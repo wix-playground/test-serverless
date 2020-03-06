@@ -6,7 +6,7 @@ module.exports = (functionsBuilder) =>
     .addWebFunction('GET', '/:ogr/:repo/:scope/:ref', async (ctx, req) => {
       const message = {
            deployment:{
-              ogr: req.params.org,
+              org: req.params.org,
               repo: req.params.repo,
               scope: req.params.scope,
               ref: req.params.ref
