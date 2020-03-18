@@ -1,0 +1,23 @@
+{
+  "name": "fat-scope",
+  "version": "1.0.0",
+  "description": "Fat scope with a lot of dependencies to make a stress-test for npm",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "author": {
+    "name": "Eugene Obrezkov",
+    "url": "https://ghaiklor.com",
+    "email": "ghaiklor@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "6.8.0",
+    "jasmine": "3.5.0",
+    "jest": "25.1.0",
+    "mocha": "7.1.1",
+    "puppeteer": "2.1.1",
+    "typescript": "3.8.3"
+  }
+}
