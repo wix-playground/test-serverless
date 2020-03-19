@@ -28,7 +28,6 @@ SCOPE_TO_BENCHMARK=$1
 SCRIPTS_TO_BENCHMARK=(
     "${NPM_INSTALL}"
     "${NPM_INSTALL} --prefer-offline"
-    "${NPM_INSTALL} --prefer-online"
     "${YARN_INSTALL}"
     "${PNPM_INSTALL}"
     "${PNPM_INSTALL} --prefer-offline"
