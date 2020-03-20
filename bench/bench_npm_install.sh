@@ -19,18 +19,21 @@ if [[ ! $(command -v hyperfine) ]]; then
     brew install hyperfine
 fi
 
-NPM_INSTALL="npm install"
-YARN_INSTALL="yarn install --non-interactive"
-PNPM_INSTALL="pnpm install"
+NPM_INSTALL="npm install --no-optional --no-shrinkwrap --no-package-lock --no-audit"
+YARN_INSTALL="yarn install --no-lockfile --pure-lockfile --ignore-optional --non-interactive"
+PNPM_INSTALL="pnpm install --no-optional"
 CLEAN_ARTIFACTS="rm -rf ./node_modules ./pnpm-lock.yaml ./package-lock.json ./yarn.lock"
 CLEAN_CACHE="npm cache clean --force && yarn cache clean && pnpm store prune"
 SCOPE_TO_BENCHMARK=$1
 SCRIPTS_TO_BENCHMARK=(
     "${NPM_INSTALL}"
     "${NPM_INSTALL} --prefer-offline"
+    "${NPM_INSTALL} --prefer-offline --ignore-scripts"
     "${YARN_INSTALL}"
+    "${YARN_INSTALL} --ignore-scripts"
     "${PNPM_INSTALL}"
     "${PNPM_INSTALL} --prefer-offline"
+    "${PNPM_INSTALL} --prefer-offline --ignore-scripts"
 )
 
 cd "${SCOPE_TO_BENCHMARK}"
