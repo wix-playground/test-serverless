@@ -33,6 +33,6 @@ for patch, color in zip(boxplot["boxes"], colors):
     patch.set_facecolor(color)
 
 plt.title(args.title)
-plt.legend(handles=boxplot["boxes"], labels=commands, loc="best", fontsize="medium")
+plt.legend(handles=boxplot["boxes"], labels=commands, loc="upper right", fontsize="small")
 plt.ylabel("Time [s]")
 plt.show()
