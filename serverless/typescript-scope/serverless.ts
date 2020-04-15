@@ -3,6 +3,6 @@ import {FunctionsBuilder} from '@wix/serverless-api';
 
 const functionExport = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
-        .addWebFunction('GET', '/hello', (ctx, req) => uuid());
+        .addWebFunction('GET', '/hello', async () => uuid());
 
 module.exports = functionExport;
