@@ -1,0 +1,21 @@
+{
+  "name": "typescript-scope-with-lock-file",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --skipLibCheck"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@wix/serverless-api": "^1.0.483",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "@types/uuid": "^7.0.2",
+    "typescript": "^3.4.5"
+  }
+}
