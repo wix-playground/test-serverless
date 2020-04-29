@@ -2,7 +2,7 @@
   "name": "typescript-scope-with-lock-file",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "serverless.js",
   "scripts": {
     "build": "tsc --skipLibCheck"
   },
