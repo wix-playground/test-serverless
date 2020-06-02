@@ -17,7 +17,7 @@ module.exports = function (builder) {
     })
     .addWebFunction("GET", "/all", async (context) => {
       const response = await axios.get(ACTIVE_DEPLOYMENTS_URL);
-      const deployments = response.deployments;
+      const deployments = response.data.deployments;
       const promises = deployments.map(async (deployment) => {
         const { org, repo, scope, ref } = deployment;
         const message = {
