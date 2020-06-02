@@ -19,16 +19,16 @@ module.exports = function (builder) {
       const response = await axios.get(ACTIVE_DEPLOYMENTS_URL);
       const deployments = response.data.deployments;
       const promises = deployments.map(async (deployment) => {
-        const { org, repo, scope, ref } = deployment;
+        const { id, org, repo, scope, ref } = deployment;
         const message = {
           deployment: { org, repo, scope, ref },
           collaborator: "serverless-test-builder@no-mail.com",
         };
 
-        return await context.kafka.produceToTopic(DEPLOYMENTS_TO_BUILD, message);
+        await context.kafka.produceToTopic(DEPLOYMENTS_TO_BUILD, message);
+        return id;
       });
 
-      const result = await Promise.allSettled(promises);
-      return result;
+      return await Promise.allSettled(promises);
     });
 };
