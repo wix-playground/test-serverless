@@ -1,0 +1,11 @@
+{
+  "name": "test-builder",
+  "version": "1.0.0",
+  "description": "Serverless function to test build-server",
+  "main": "serverless.js",
+  "author": "Eugene Obrezkov <ghaiklor@gmail.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "axios": "0.19.2"
+  }
+}
