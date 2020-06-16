@@ -4,7 +4,8 @@
   "description": "",
   "main": "serverless.js",
   "scripts": {
-    "build": "tsc --skipLibCheck"
+    "build": "tsc",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -13,10 +14,14 @@
     "uuid": "8.1.0"
   },
   "devDependencies": {
+    "@types/jest": "26.0.0",
     "@types/node": "14.0.13",
     "@types/uuid": "8.0.0",
     "@wix/serverless-api": "latest",
     "@wix/serverless-testkit": "latest",
+    "axios": "0.19.2",
+    "jest": "26.0.1",
+    "ts-jest": "^26.1.0",
     "typescript": "3.9.5"
   }
 }

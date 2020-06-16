@@ -1,8 +1,6 @@
-import * as uuid from 'uuid/v4';
+import {v4 as uuid} from 'uuid';
 import {FunctionsBuilder} from '@wix/serverless-api';
 
-const functionExport = (functionsBuilder: FunctionsBuilder) =>
-    functionsBuilder
-        .addWebFunction('GET', '/hello', async () => uuid());
-
-module.exports = functionExport;
+export default function entry(builder: FunctionsBuilder) {
+    return builder.addWebFunction('GET', '/hello', async () => uuid());
+}
