@@ -10,12 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wix/serverless-api": "^1.0.483",
-    "uuid": "^3.3.2"
+    "uuid": "8.1.0"
   },
   "devDependencies": {
-    "@types/node": "^13.11.1",
-    "@types/uuid": "^7.0.2",
-    "typescript": "^3.4.5"
+    "@types/node": "14.0.13",
+    "@types/uuid": "8.0.0",
+    "@wix/serverless-api": "latest",
+    "@wix/serverless-testkit": "latest",
+    "typescript": "3.9.5"
   }
 }
