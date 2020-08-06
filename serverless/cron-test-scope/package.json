@@ -1,0 +1,13 @@
+{
+  "name": "cron-test-scope",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "mykolab@wix.com",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@wix/serverless-api": "^1.0.566",
+    "typescript": "^3.9.7"
+  }
+}
