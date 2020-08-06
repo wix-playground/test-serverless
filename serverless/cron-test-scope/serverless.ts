@@ -7,7 +7,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
     })
     .addCronJob(
       'GET',
-      'http://wix.com/_serverless/cron-test-scope/someFunction',
+      '/someFunction',
       '0 * * ? * *'
     )
     .addCronFunction(
