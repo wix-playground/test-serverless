@@ -5,9 +5,17 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
     .addWebFunction('GET', '/someFunction', async (ctx, req) => {
       ctx.logger.info('Got call to /someFunc');
     })
+    .addWebFunction('GET', '/someOtherFunction', async (ctx, req) => {
+      ctx.logger.info('Got call to /someOtherFunc');
+    })
     .addCronJob(
       'GET',
       '/someFunction',
+      '0 * * ? * *'
+    )
+    .addCronJob(
+      'GET',
+      '/someOtherFunction',
       '0 * * ? * *'
     )
     .addCronFunction(
