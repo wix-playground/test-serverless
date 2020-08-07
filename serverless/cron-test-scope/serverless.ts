@@ -7,7 +7,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
       '7 * * ? * *',
       async (ctx) => {
         await new Promise((res) => {
-          ctx.logger.info('exampleCronFunction v2 called');
+          ctx.logger.info('exampleCronFunction v3 called');
           res();
         });
       }
