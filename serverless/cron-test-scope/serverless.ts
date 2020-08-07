@@ -5,7 +5,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
     .addCronFunction(
       'exampleCronFunction',
       '7 * * ? * *',
-      async (ctx) => ctx.logger.info('exampleCronFunction called')
+      async (ctx) => ctx.logger.info('exampleCronFunction v2 called')
     )
     .addCronFunction(
       'anotherExampleCronFunction',
