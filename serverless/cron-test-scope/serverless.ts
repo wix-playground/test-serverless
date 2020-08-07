@@ -4,10 +4,10 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
   functionsBuilder
     .addCronFunction(
       'exampleCronFunction',
-      '3 * * ? * *',
+      '23 * * ? * *',
       async (ctx) => {
         await new Promise((res) => {
-          ctx.logger.info('exampleCronFunction v4 called');
+          ctx.logger.info('exampleCronFunction v5 called');
           res();
         });
       }
