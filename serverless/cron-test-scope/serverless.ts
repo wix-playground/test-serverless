@@ -4,11 +4,11 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
   functionsBuilder
     .addCronFunction(
       'exampleCronFunction',
-      '0 * * ? * *',
+      '7 * * ? * *',
       async (ctx) => ctx.logger.info('exampleCronFunction called')
     )
     .addCronFunction(
       'anotherExampleCronFunction',
-      '0 * * ? * *',
+      '13 * * ? * *',
       async (ctx) => ctx.logger.info('anotherExampleCronFunction called')
     );
