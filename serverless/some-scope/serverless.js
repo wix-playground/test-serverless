@@ -13,9 +13,9 @@ module.exports = (fb) =>
             const d = candidates[i];
             try {
                 const result = await axios.post('http://bo.wix.com/serverless-deployer-service/v2/deployables/artifacts', {
-                    deployable_id: d,
-                    artifact_id: sandboxId,
-                    delay_in_seconds: 0
+                    deployableId: d,
+                    artifactId: sandboxId,
+                    delayInSeconds: 0
                 });
                 ctx.logger.info(`Moved ${d} to ${sandboxId} with the result ${result.data}`);
                 movedSuccessfully.push(d);
