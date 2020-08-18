@@ -22,7 +22,6 @@ module.exports = (fb) =>
                 ctx.logger.error(`Failed to move ${d} to ${sandboxId} with the error ${JSON.stringify(e)}`);
                 failedToMove.push(d);
             }
-            await new Promise((res) => {setTimeout(res, 10000)});
         }
         return { movedSuccessfully, failedToMove };
       });
