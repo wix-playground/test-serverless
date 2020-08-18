@@ -17,10 +17,10 @@ module.exports = (fb) =>
                     delay_in_seconds: 0
                 });
                 ctx.logger.info(`Moved ${d} to ${sandboxId} with the result ${result.data}`);
-                movedSuccessfully.append(d);
+                movedSuccessfully.push(d);
             } catch (e) {
                 ctx.logger.error(`Failed to move ${d} to ${sandboxId} with the error ${JSON.stringify(e)}`);
-                failedToMove.append(d);
+                failedToMove.push(d);
             }
             await new Promise((res) => {setTimeout(res, 10000)});
         }
