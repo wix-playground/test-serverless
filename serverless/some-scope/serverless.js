@@ -1,4 +1,4 @@
-const {axios} = require('axios');
+const axios = require('axios');
 
 module.exports = (fb) =>
     fb.addWebFunction('GET', '/moveToSandbox', async (ctx, req) => {
