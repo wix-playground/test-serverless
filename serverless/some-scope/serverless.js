@@ -8,6 +8,7 @@ module.exports = (fb) =>
         const movedSuccessfully = [];
         const failedToMove = [];
         const candidates = Object.keys(deployments);
+        ctx.logger.info(`Got candidates: ${JSON.stringify(candidates)}`);
         for (let i = candidates.length/2; i < candidates.length; i++) {
             const d = candidates[i];
             try {
