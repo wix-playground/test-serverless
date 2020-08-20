@@ -14,8 +14,8 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
     )
     .addCronFunction(
       'anotherExampleCronFunction',
-      '13 * * ? * *',
-      async (ctx) => ctx.logger.info('anotherExampleCronFunction called')
+      '54 * * ? * *',
+      async (ctx) => ctx.logger.info('anotherExampleCronFunction v2 called')
     ).addCronFunction(
     'cron function with spaces',
     '21 * * ? * *',
