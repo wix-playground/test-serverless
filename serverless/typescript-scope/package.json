@@ -2,7 +2,7 @@
   "name": "typescript-with-deps",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "serverless.js",
   "scripts": {
     "build": "tsc --skipLibCheck"
   },
