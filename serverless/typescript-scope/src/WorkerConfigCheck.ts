@@ -19,5 +19,5 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext) {
   const page = (await axios(`https://fryingpan.wixpress.com/services/${artifactId}/edit`)).data;
   ctx.logger.info(`Got response: ${page}`);
   const dom = new JSDOM(page);
-  ctx.logger.info(`Got dom: ${JSON.stringify(dom.window)}`);
+  ctx.logger.info(`Got dom: ${JSON.stringify(dom.window.document)}`);
 }
