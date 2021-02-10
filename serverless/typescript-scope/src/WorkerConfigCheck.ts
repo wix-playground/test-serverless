@@ -17,6 +17,7 @@ async function checkArtifactIds(artifactIds: string[], ctx: FunctionContext) {
 
 async function checkWorkerConfig(artifactId: string, ctx: FunctionContext) {
   const page = (await axios(`https://fryingpan.wixpress.com/services/${artifactId}/edit`)).data;
+  ctx.logger.info(`Got response: ${JSON.stringify(page)}`);
   const dom = new JSDOM(page);
   ctx.logger.info(`Got dom: ${JSON.stringify(dom)}`);
 }
