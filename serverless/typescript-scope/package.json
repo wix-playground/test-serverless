@@ -2,7 +2,7 @@
   "name": "typescript-with-deps",
   "version": "1.0.0",
   "description": "",
-  "main": "serverless.js",
+  "main": "dist/serverless.js",
   "scripts": {
     "build": "tsc --skipLibCheck"
   },
@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@wix/serverless-api": "^1.0.483",
+    "axios": "^0.21.1",
+    "jsdom": "^16.4.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
