@@ -23,5 +23,5 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext) {
       QuerySelector: true
     }
   });
-  ctx.logger.info(`Got dom: ${JSON.stringify(dom.window.document.querySelector)}`);
+  ctx.logger.info(`Got dom: ${JSON.stringify(dom.window.document.querySelector('div'))}`);
 }
