@@ -6,11 +6,11 @@ export async function checkWorkerConfigs(ctx: FunctionContext) {
   const response = await axios.get('http://api.42.wixprod.net/serverless-deployer-service/v2/artifacts');
   //const metadata = response.data.metadata;
   const artifactIds = response.data.artifactIds;
-  await checkArtifactIds(artifactIds, ctx);
+  return await checkArtifactIds(artifactIds, ctx);
 }
 
 async function checkArtifactIds(artifactIds: string[], ctx: FunctionContext) {
-  await Promise.all(artifactIds.map(async (id) =>
+  return await Promise.all(artifactIds.map(async (id) =>
     await checkWorkerConfig(id, ctx)
   ));
 }
@@ -23,5 +23,5 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext) {
       QuerySelector: true
     }
   });
-  ctx.logger.info(`Got dom: ${JSON.stringify(dom.window.document.querySelector('div'))}`);
+  return `Got dom: ${JSON.stringify(dom.window.document.querySelector('div').attributes)}`;
 }
