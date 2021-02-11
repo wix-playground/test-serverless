@@ -15,9 +15,13 @@ async function checkArtifactIds(artifactIds: string[], ctx: FunctionContext) {
   ));
 }
 
-async function checkWorkerConfig(artifactId: string, ctx: FunctionContext) {
+async function checkWorkerConfig(artifactId: string, ctx: FunctionContext): Promise<boolean> {
   const page = (await axios(`https://fryingpan.wixpress.com/services/${artifactId}/edit`)).data;
   ctx.logger.info(`Got response: ${page}`);
   const dom = new JSDOM(page);
-  return `Got dom: ${JSON.stringify(dom.window.document.querySelector('div').innerHTML)}`;
+  const configs = dom.window.document.querySelectorAll('div.service_configs');
+  configs.forEach((config) => {
+    ctx.logger.info(config.innerHTML);
+  });
+  return false;
 }
