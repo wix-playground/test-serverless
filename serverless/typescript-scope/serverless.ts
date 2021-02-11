@@ -6,7 +6,7 @@ const functionExport = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
         .addWebFunction('GET', '/hello', async () => uuid())
         .addWebFunction('GET', '/check', async (ctx, _req) => {
-          await checkWorkerConfigs(ctx);
+          return await checkWorkerConfigs(ctx);
         });
 
 module.exports = functionExport;
