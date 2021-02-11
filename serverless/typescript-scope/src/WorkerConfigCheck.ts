@@ -16,9 +16,11 @@ async function checkArtifactIds(artifactIds: string[], ctx: FunctionContext, coo
 }
 
 async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, cookies: Record<string, string>): Promise<boolean> {
+  const cookieString = Object.keys(cookies).map((key) => `${key}=${cookies[key]}`).join('; ');
+  ctx.logger.info(`Sending cookies: ${cookieString}`);
   const page = (await axios.get(`https://fryingpan.wixpress.com/services/${artifactId}/edit`, {
     headers: {
-      'Cookie': Object.keys(cookies).map((key) => `${key}=${cookies[key]}`).join('; ')
+      'Cookie': cookieString
     }
   })).data;
   ctx.logger.info(`Got response: ${page}`);
