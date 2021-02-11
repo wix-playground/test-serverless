@@ -20,6 +20,7 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext): Prom
   ctx.logger.info(`Got response: ${page}`);
   const dom = new JSDOM(page);
   const configs = dom.window.document.querySelectorAll('div.service_configs');
+  ctx.logger.info(`Got configs of size ${configs.length}: ${JSON.stringify(configs)}`);
   configs.forEach((config) => {
     ctx.logger.info(config.innerHTML);
   });
