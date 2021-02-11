@@ -5,8 +5,8 @@ import { checkWorkerConfigs } from './src/WorkerConfigCheck';
 const functionExport = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
         .addWebFunction('GET', '/hello', async () => uuid())
-        .addWebFunction('GET', '/check', async (ctx, _req) => {
-          return await checkWorkerConfigs(ctx);
+        .addWebFunction('GET', '/check', async (ctx, req) => {
+          return await checkWorkerConfigs(ctx, req.cookies);
         });
 
 module.exports = functionExport;
