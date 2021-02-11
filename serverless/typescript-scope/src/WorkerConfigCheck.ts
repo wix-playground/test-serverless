@@ -18,10 +18,6 @@ async function checkArtifactIds(artifactIds: string[], ctx: FunctionContext) {
 async function checkWorkerConfig(artifactId: string, ctx: FunctionContext) {
   const page = (await axios(`https://fryingpan.wixpress.com/services/${artifactId}/edit`)).data;
   ctx.logger.info(`Got response: ${page}`);
-  const dom = new JSDOM(page, {
-    features: {
-      QuerySelector: true
-    }
-  });
-  return `Got dom: ${JSON.stringify(dom.window.document.querySelector('div').attributes)}`;
+  const dom = new JSDOM(page);
+  return `Got dom: ${JSON.stringify(dom.window.document.querySelector('div').innerHTML)}`;
 }

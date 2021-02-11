@@ -16,6 +16,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@types/jsdom": "^16.2.6",
     "@types/node": "^13.11.1",
     "@types/uuid": "^7.0.2",
     "typescript": "^3.4.5"
