@@ -1,8 +1,10 @@
 {
   "files": ["serverless.ts"],
   "include": ["src/*.ts"],
+  "exclude": ["src/generated/"],
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "esModuleInterop": true,
   }
 }
