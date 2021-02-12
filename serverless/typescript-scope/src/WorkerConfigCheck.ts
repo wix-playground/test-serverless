@@ -29,12 +29,17 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
       'Authorization': `Bearer ${authToken}`
     }
   })).data;
-  const deployments = page['deployments'];
-  ctx.logger.info(`Got deployments ${JSON.stringify(deployments)}`);
-  const deploymentsInConfig = deployments.value;
-  const expectedDeployments = await expectedDeploymentsValue(artifactId);
-  ctx.logger.info(`Got deploymentsInConfig ${deploymentsInConfig} and expectedDeployments ${expectedDeployments}`);
-  return deploymentsInConfig === expectedDeployments;
+  const isProductionFlag = page['enforce-healthchecks-per-dep'];
+  ctx.logger.info(`Got enforce-healthchecks-per-dep ${JSON.stringify(isProductionFlag)}`);
+  if (isProductionFlag?.value === 'true') {
+    const deployments = page['deployments'];
+    ctx.logger.info(`Got deployments ${JSON.stringify(deployments)}`);
+    const deploymentsInConfig = deployments.value;
+    const expectedDeployments = await expectedDeploymentsValue(artifactId);
+    ctx.logger.info(`Got deploymentsInConfig ${deploymentsInConfig} and expectedDeployments ${expectedDeployments}`);
+    return deploymentsInConfig === expectedDeployments;
+  }
+  return true;
 }
 
 async function expectedDeploymentsValue(artifactId: string): Promise<string> {
