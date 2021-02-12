@@ -1,6 +1,7 @@
 import type { FunctionContext } from '@wix/serverless-api';
 import WixAspects from '@wix/wix-aspects';
 import axios from 'axios';
+import _ from 'lodash';
 
 import { requests,
   responses,
@@ -39,11 +40,7 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
     const deploymentsInConfig = (deployments.value as string).split(',');
     const expectedDeployments = await expectedDeploymentsValue(artifactId, runtimeGrpcClient);
     ctx.logger.info(`Got deploymentsInConfig ${JSON.stringify(deploymentsInConfig)} and expectedDeployments ${JSON.stringify(expectedDeployments)}`);
-    let equal = true;
-    deploymentsInConfig.forEach((d) => { if (!expectedDeployments.includes(d)){
-      equal = false;
-    }});
-    if (deploymentsInConfig !== expectedDeployments) {
+    if (!_.isEqual(deploymentsInConfig, expectedDeployments)) {
       return {result: false, desc: `${JSON.stringify(deploymentsInConfig)} != ${JSON.stringify(expectedDeployments)} \n for ${artifactId}`};
     }
   }
