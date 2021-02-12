@@ -36,17 +36,21 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
   if (isProductionFlag?.value === 'true') {
     const deployments = page['deployments'];
     ctx.logger.info(`Got deployments ${JSON.stringify(deployments)}`);
-    const deploymentsInConfig = deployments.value;
+    const deploymentsInConfig = (deployments.value as string).split(',');
     const expectedDeployments = await expectedDeploymentsValue(artifactId, runtimeGrpcClient);
-    ctx.logger.info(`Got deploymentsInConfig ${deploymentsInConfig} and expectedDeployments ${expectedDeployments}`);
+    ctx.logger.info(`Got deploymentsInConfig ${JSON.stringify(deploymentsInConfig)} and expectedDeployments ${JSON.stringify(expectedDeployments)}`);
+    let equal = true;
+    deploymentsInConfig.forEach((d) => { if (!expectedDeployments.includes(d)){
+      equal = false;
+    }});
     if (deploymentsInConfig !== expectedDeployments) {
-      return {result: false, desc: `${deploymentsInConfig} != ${expectedDeployments} \n for ${artifactId}`};
+      return {result: false, desc: `${JSON.stringify(deploymentsInConfig)} != ${JSON.stringify(expectedDeployments)} \n for ${artifactId}`};
     }
   }
   return {result: true, desc: ''};
 }
 
-async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: RuntimeService): Promise<string> {
+async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: RuntimeService): Promise<string[]> {
   const request: RuntimeDiffRequest = {
     artifactId,
     runtimeId: 'lol',
@@ -55,5 +59,5 @@ async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: R
 
   const response: RuntimeDiffResponse = await runtimeGrpcClient.diff(WixAspects.createEmptyStore(), request);
 
-  return response.install.map((ii) => `${ii.deployment.deployableId}:${ii.deployment.commitRef}`).join(',');
+  return response.install.map((ii) => `${ii.deployment.deployableId}:${ii.deployment.commitRef}`);
 }
