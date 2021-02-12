@@ -5,7 +5,8 @@ import axios from 'axios';
 import { requests,
   responses,
   services, } from './generated/client/proto-generated';
-type Runtime = services.wix.serverless.deployer.api.v2.Runtime;
+const Runtime = services.wix.serverless.deployer.api.v2.Runtime;
+type RuntimeService = services.wix.serverless.deployer.api.v2.Runtime;
 type RuntimeDiffRequest = requests.wix.serverless.deployer.api.v2.RuntimeDiffRequest;
 type RuntimeDiffResponse = responses.wix.serverless.deployer.api.v2.RuntimeDiffResponse;
 type Deployment = responses.wix.serverless.deployer.api.v2.Deployment;
@@ -18,12 +19,13 @@ export async function checkWorkerConfigs(ctx: FunctionContext, authToken: string
 }
 
 async function checkArtifactIds(artifactIds: string[], ctx: FunctionContext, authToken: string) {
+  const runtimeGrpcClient = ctx.grpcClient(Runtime, 'com.wixpress.platform.serverless-deployer-service');
   return await Promise.all(artifactIds.map(async (id) =>
-    await checkWorkerConfig(id, ctx, authToken)
+    await checkWorkerConfig(id, ctx, authToken, runtimeGrpcClient)
   ));
 }
 
-async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authToken: string): Promise<boolean> {
+async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authToken: string, runtimeGrpcClient: RuntimeService): Promise<boolean> {
   const page = (await axios.get(`https://fryingpan.wixpress.com/api/v2/services/${artifactId}/configs`, {
     headers: {
       'Authorization': `Bearer ${authToken}`
@@ -35,21 +37,21 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
     const deployments = page['deployments'];
     ctx.logger.info(`Got deployments ${JSON.stringify(deployments)}`);
     const deploymentsInConfig = deployments.value;
-    const expectedDeployments = await expectedDeploymentsValue(artifactId);
+    const expectedDeployments = await expectedDeploymentsValue(artifactId, runtimeGrpcClient);
     ctx.logger.info(`Got deploymentsInConfig ${deploymentsInConfig} and expectedDeployments ${expectedDeployments}`);
     return deploymentsInConfig === expectedDeployments;
   }
   return true;
 }
 
-async function expectedDeploymentsValue(artifactId: string): Promise<string> {
+async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: RuntimeService): Promise<string> {
   const request: RuntimeDiffRequest = {
     artifactId,
     runtimeId: 'lol',
     existing: [],
   };
 
-  const response: RuntimeDiffResponse = await this.runtimeGrpcClient.diff(WixAspects.createEmptyStore(), request);
+  const response: RuntimeDiffResponse = await runtimeGrpcClient.diff(WixAspects.createEmptyStore(), request);
 
   return response.install.map((ii) => `${ii.deployment.deployableId}:${ii.deployment.commitRef}`).join(',');
 }
