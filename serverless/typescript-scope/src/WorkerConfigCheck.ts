@@ -39,7 +39,7 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
 
 async function expectedDeploymentsValue(artifactId: string): Promise<string> {
   const request: RuntimeDiffRequest = {
-    artifactId: this.artifactId,
+    artifactId,
     runtimeId: 'lol',
     existing: [],
   };
