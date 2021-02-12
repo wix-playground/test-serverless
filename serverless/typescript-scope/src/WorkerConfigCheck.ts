@@ -25,7 +25,7 @@ async function checkArtifactIds(artifactIds: string[], ctx: FunctionContext, aut
   ));
 }
 
-async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authToken: string, runtimeGrpcClient: RuntimeService): Promise<boolean> {
+async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authToken: string, runtimeGrpcClient: RuntimeService): Promise<{result: boolean, desc: string}> {
   const page = (await axios.get(`https://fryingpan.wixpress.com/api/v2/services/${artifactId}/configs`, {
     headers: {
       'Authorization': `Bearer ${authToken}`
@@ -39,9 +39,11 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
     const deploymentsInConfig = deployments.value;
     const expectedDeployments = await expectedDeploymentsValue(artifactId, runtimeGrpcClient);
     ctx.logger.info(`Got deploymentsInConfig ${deploymentsInConfig} and expectedDeployments ${expectedDeployments}`);
-    return deploymentsInConfig === expectedDeployments;
+    if (deploymentsInConfig !== expectedDeployments) {
+      return {result: false, desc: `${deploymentsInConfig} != ${expectedDeployments} \n for ${artifactId}`};
+    }
   }
-  return true;
+  return {result: true, desc: ''};
 }
 
 async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: RuntimeService): Promise<string> {
