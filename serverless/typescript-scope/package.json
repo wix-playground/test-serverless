@@ -4,13 +4,14 @@
   "description": "",
   "main": "dist/serverless.js",
   "scripts": {
-    "build": "tsc --skipLibCheck"
+    "build": "wix-proto-codegen --module . --dir ./src/generated && wix-proto-codegen --module . --dir ./dist/src/generated  && tsc --skipLibCheck"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@wix/serverless-api": "^1.0.483",
+    "@wix/wix-aspects": "^1.0.1379",
     "axios": "^0.21.1",
     "jsdom": "^16.4.0",
     "uuid": "^3.3.2"
@@ -19,6 +20,8 @@
     "@types/jsdom": "^16.2.6",
     "@types/node": "^13.11.1",
     "@types/uuid": "^7.0.2",
+    "@wix/serverless-deployer-api": "*",
+    "@wix/wix-proto-codegen": "*",
     "typescript": "^3.4.5"
   }
 }

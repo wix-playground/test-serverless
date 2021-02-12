@@ -1,5 +1,14 @@
 import type { FunctionContext } from '@wix/serverless-api';
+import WixAspects from '@wix/wix-aspects';
 import axios from 'axios';
+
+import { requests,
+  responses,
+  services, } from './generated/client/proto-generated';
+type Runtime = services.wix.serverless.deployer.api.v2.Runtime;
+type RuntimeDiffRequest = requests.wix.serverless.deployer.api.v2.RuntimeDiffRequest;
+type RuntimeDiffResponse = responses.wix.serverless.deployer.api.v2.RuntimeDiffResponse;
+type Deployment = responses.wix.serverless.deployer.api.v2.Deployment;
 
 export async function checkWorkerConfigs(ctx: FunctionContext, authToken: string) {
   const response = await axios.get('http://api.42.wixprod.net/serverless-deployer-service/v2/artifacts');
@@ -20,9 +29,22 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
       'Authorization': `Bearer ${authToken}`
     }
   })).data;
-  ctx.logger.info(`Got response: ${page}`);
   const deployments = page['deployments'];
   ctx.logger.info(`Got deployments ${JSON.stringify(deployments)}`);
+  const deploymentsInConfig = deployments.value;
+  const expectedDeployments = await expectedDeploymentsValue(artifactId);
+  ctx.logger.info(`Got deploymentsInConfig ${deploymentsInConfig} and expectedDeployments ${expectedDeployments}`);
+  return deploymentsInConfig === expectedDeployments;
+}
 
-  return false;
+async function expectedDeploymentsValue(artifactId: string): Promise<string> {
+  const request: RuntimeDiffRequest = {
+    artifactId: this.artifactId,
+    runtimeId: 'lol',
+    existing: [],
+  };
+
+  const response: RuntimeDiffResponse = await this.runtimeGrpcClient.diff(WixAspects.createEmptyStore(), request);
+
+  return response.install.map((ii) => `${ii.deployment.deployableId}:${ii.deployment.commitRef}`).join(',');
 }
