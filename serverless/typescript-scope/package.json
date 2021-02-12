@@ -14,6 +14,7 @@
     "@wix/wix-aspects": "^1.0.1379",
     "axios": "^0.21.1",
     "jsdom": "^16.4.0",
+    "lodash": "^4.17.20",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
