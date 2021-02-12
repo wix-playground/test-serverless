@@ -1,6 +1,5 @@
 import type { FunctionContext } from '@wix/serverless-api';
 import axios from 'axios';
-import { JSDOM } from 'jsdom';
 
 export async function checkWorkerConfigs(ctx: FunctionContext, cookies: Record<string, string>) {
   const response = await axios.get('http://api.42.wixprod.net/serverless-deployer-service/v2/artifacts');
@@ -18,17 +17,14 @@ async function checkArtifactIds(artifactIds: string[], ctx: FunctionContext, coo
 async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, cookies: Record<string, string>): Promise<boolean> {
   const cookieString = Object.keys(cookies).map((key) => `${key}=${cookies[key]}`).join('; ');
   ctx.logger.info(`Sending cookies: ${cookieString}`);
-  const page = (await axios.get(`https://fryingpan.wixpress.com/services/${artifactId}/edit`, {
+  const page = (await axios.get(`https://fryingpan.wixpress.com/api/v2/services/${artifactId}/configs`, {
     headers: {
       'Cookie': cookieString
     }
   })).data;
   ctx.logger.info(`Got response: ${page}`);
-  const dom = new JSDOM(page);
-  const configs = dom.window.document.querySelectorAll('div.service_configs');
-  ctx.logger.info(`Got configs of size ${configs.length}: ${JSON.stringify(configs)}`);
-  configs.forEach((config) => {
-    ctx.logger.info(config.innerHTML);
-  });
+  const deployments = page['deployments'];
+  ctx.logger.info(`Got deployments ${JSON.stringify(deployments)}`);
+
   return false;
 }
