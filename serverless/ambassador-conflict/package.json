@@ -6,7 +6,7 @@
     "test": "DEBUG='wix:*' jest"
   },
   "dependencies": {
-    "ambassador-conflict-test": "1.0.0"
+    "@wix/ambassador-conflict-test": "1.0.0"
   },
   "devDependencies": {
     "@wix/ambassador-wix-meta-site-manager-webapp": "^2.0.84",
