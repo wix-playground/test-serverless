@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wix/serverless-api": "^1.0.483",
+    "@wix/serverless-api": "^1.0.484",
     "@wix/wix-aspects": "^1.0.1379",
     "axios": "^0.21.1",
     "jsdom": "^16.4.0",
