@@ -38,7 +38,7 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
     const deployments = page['deployments'];
     ctx.logger.info(`Got deployments ${JSON.stringify(deployments)}`);
     const deploymentsInConfig = (deployments.value as string).split(',');
-    const expectedDeployments = await expectedDeploymentsValue(artifactId, runtimeGrpcClient);
+    const expectedDeployments = await expectedDeploymentsValue(artifactId, runtimeGrpcClient, ctx);
     ctx.logger.info(`Got deploymentsInConfig ${JSON.stringify(deploymentsInConfig)} and expectedDeployments ${JSON.stringify(expectedDeployments)}`);
     if (!_.isEqual(deploymentsInConfig, expectedDeployments)) {
       return {result: false, desc: `${JSON.stringify(deploymentsInConfig)} != ${JSON.stringify(expectedDeployments)} \n for ${artifactId}`};
@@ -47,7 +47,7 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
   return {result: true, desc: ''};
 }
 
-async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: RuntimeService): Promise<string[]> {
+async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: RuntimeService, ctx: FunctionContext): Promise<string[]> {
   const request: RuntimeDiffRequest = {
     artifactId,
     runtimeId: 'lol',
@@ -56,5 +56,9 @@ async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: R
 
   const response: RuntimeDiffResponse = await runtimeGrpcClient.diff(WixAspects.createEmptyStore(), request);
 
-  return response.install.sort((a, b) => a.deployment.deployableId.localeCompare(b.deployment.deployableId)).map((ii) => `${ii.deployment.deployableId}:${ii.deployment.commitRef}`);
+  const sortedDeployments = response.install.sort((a, b) => a.deployment.deployableId.localeCompare(b.deployment.deployableId));
+  ctx.logger.info(`Got not sorted deployments\n${response.install}`);
+  ctx.logger.info(`Got sorted deployments\n${sortedDeployments}`);
+
+  return sortedDeployments.map((ii) => `${ii.deployment.deployableId}:${ii.deployment.commitRef}`);
 }
