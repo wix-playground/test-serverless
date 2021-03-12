@@ -56,5 +56,5 @@ async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: R
 
   const response: RuntimeDiffResponse = await runtimeGrpcClient.diff(WixAspects.createEmptyStore(), request);
 
-  return response.install.map((ii) => `${ii.deployment.deployableId}:${ii.deployment.commitRef}`);
+  return response.install.sort((a, b) => a.deployment.deployableId.localeCompare(b.deployment.deployableId)).map((ii) => `${ii.deployment.deployableId}:${ii.deployment.commitRef}`);
 }
