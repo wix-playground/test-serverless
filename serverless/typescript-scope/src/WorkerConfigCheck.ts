@@ -44,7 +44,7 @@ async function checkWorkerConfig(artifactId: string, ctx: FunctionContext, authT
       return {result: false, desc: `${JSON.stringify(deploymentsInConfig)} != ${JSON.stringify(expectedDeployments)} \n for ${artifactId}`};
     }
   }
-  return {result: true, desc: ''};
+  return {result: true, desc: artifactId};
 }
 
 async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: RuntimeService, ctx: FunctionContext): Promise<string[]> {
