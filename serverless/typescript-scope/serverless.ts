@@ -7,7 +7,7 @@ const functionExport = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
         .addWebFunction('GET', '/hello', async () => uuid())
         .addWebFunction('GET', '/check', {timeoutMillis: 900000}, async (ctx, req) => {
-          return await checkWorkerConfigs(ctx, req.query.authToken);
+          return await checkWorkerConfigs(ctx, req.query.authToken, req.query.offset);
         });
 
 module.exports = functionExport;
