@@ -15,8 +15,13 @@ type Deployment = responses.wix.serverless.deployer.api.v2.Deployment;
 export async function checkWorkerConfigs(ctx: FunctionContext, authToken: string) {
   const response = await axios.get('http://api.42.wixprod.net/serverless-deployer-service/v2/artifacts');
   //const metadata = response.data.metadata;
-  const artifactIds = response.data.artifactIds;
-  return await checkArtifactIds(artifactIds, ctx, authToken);
+  const metadata = response.data.metadata as {count: number, offset: number, total: number};
+  const promisesArray = [];
+  for (var offset = 0; offset < metadata.total; offset + metadata.count) {
+    const artifactIds = (await axios.get(`http://api.42.wixprod.net/serverless-deployer-service/v2/artifacts?offset=${offset}`)).data.artifactIds;
+    promisesArray.push(checkArtifactIds(artifactIds, ctx, authToken));
+  }
+  return await Promise.all(promisesArray);
 }
 
 async function checkArtifactIds(artifactIds: string[], ctx: FunctionContext, authToken: string) {
