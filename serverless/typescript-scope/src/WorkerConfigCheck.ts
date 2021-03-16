@@ -17,8 +17,10 @@ export async function checkWorkerConfigs(ctx: FunctionContext, authToken: string
   //const metadata = response.data.metadata;
   const metadata = response.data.metadata as {count: number, offset: number, total: number};
   const promisesArray = [];
+  ctx.logger.info(`Got metadata: ${JSON.stringify(metadata)}`);
   for (var offset = 0; offset < metadata.total; offset + metadata.count) {
     const artifactIds = (await axios.get(`http://api.42.wixprod.net/serverless-deployer-service/v2/artifacts?offset=${offset}`)).data.artifactIds;
+    ctx.logger.info(`For offset ${offset}: got artifactIds ${JSON.stringify(artifactIds)}`);
     promisesArray.push(checkArtifactIds(artifactIds, ctx, authToken));
   }
   return await Promise.all(promisesArray);
