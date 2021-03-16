@@ -66,8 +66,8 @@ async function expectedDeploymentsValue(artifactId: string, runtimeGrpcClient: R
   const response: RuntimeDiffResponse = await runtimeGrpcClient.diff(WixAspects.createEmptyStore(), request);
 
   const sortedDeployments = response.install.sort((a, b) => a.deployment.deployableId.localeCompare(b.deployment.deployableId));
-  ctx.logger.info(`Got not sorted deployments\n${response.install}`);
-  ctx.logger.info(`Got sorted deployments\n${sortedDeployments}`);
+  ctx.logger.info(`Got not sorted deployments\n${JSON.stringify(response.install)}`);
+  ctx.logger.info(`Got sorted deployments\n${JSON.stringify(sortedDeployments)}`);
 
   return sortedDeployments.map((ii) => `${ii.deployment.deployableId}:${ii.deployment.commitRef}`);
 }
