@@ -13,5 +13,5 @@ const functionExport = (functionsBuilder: FunctionsBuilder) =>
         ctx.logger.info('LogEvery20Seconds called');
       });
 
-//if (Math.random() > 0) throw 'This definitely should break deploy!';
+//if (Math.random() > 0) throw 'This definitely should break deploy!!';
 module.exports = functionExport;
