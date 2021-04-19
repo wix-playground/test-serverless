@@ -8,7 +8,10 @@ const functionExport = (functionsBuilder: FunctionsBuilder) =>
       .addWebFunction('GET', '/hello', async () => 'Some: v1 + ' + uuid())
       .addWebFunction('GET', '/check', {timeoutMillis: 900000}, async (ctx, req) => {
         return await checkWorkerConfigs(ctx, req.query.authToken, req.query.offset);
-      });
+      })
+      .addCronFunction('LogEvery20Seconds', '*/20 * * * * *', async (ctx) => {
+        ctx.logger.info('LogEvery20Seconds called');
+      };
 
-if (Math.random() > 0) throw 'This definitely should break deploy!';
+//if (Math.random() > 0) throw 'This definitely should break deploy!';
 module.exports = functionExport;
