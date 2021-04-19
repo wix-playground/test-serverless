@@ -10,5 +10,5 @@ const functionExport = (functionsBuilder: FunctionsBuilder) =>
         return await checkWorkerConfigs(ctx, req.query.authToken, req.query.offset);
       });
 
-if (Math.random() > 0) throw 'This definitely should break deploy';
+if (Math.random() > 0) throw 'This definitely should break deploy!';
 module.exports = functionExport;
