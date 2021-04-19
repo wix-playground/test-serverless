@@ -11,7 +11,7 @@ const functionExport = (functionsBuilder: FunctionsBuilder) =>
       })
       .addCronFunction('LogEvery20Seconds', '*/20 * * * * *', async (ctx) => {
         ctx.logger.info('LogEvery20Seconds called');
-      };
+      });
 
 //if (Math.random() > 0) throw 'This definitely should break deploy!';
 module.exports = functionExport;
