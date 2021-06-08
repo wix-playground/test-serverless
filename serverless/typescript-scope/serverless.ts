@@ -4,7 +4,7 @@ import { checkWorkerConfigs } from './src/WorkerConfigCheck';
 import axios from 'axios';
 
 
-const functionExport = (functionsBuilder: FunctionsBuilder) =>
+module.exports = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
       .addWebFunction('GET', '/hello', async () => 'Some: v1 + ' + uuid())
       .addWebFunction('GET', '/check', {timeoutMillis: 900000}, async (ctx, req) => {
@@ -187,6 +187,3 @@ const functionExport = (functionsBuilder: FunctionsBuilder) =>
           };
       }));
    });
-
-if (Math.random() > 0) throw 'This definitely should break deploy!!';
-module.exports = functionExport;
