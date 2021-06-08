@@ -185,7 +185,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
               } 
             });
 
-            const segment = artifactJson.data.segment;
+            const segment = artifactJson.data.segment_id;
             return {
               artifactId,
               segment
