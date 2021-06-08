@@ -179,7 +179,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
           try {
             const artifactJson = await axios.get(`https://fryingpan.wixpress.com/api/v2/services/${artifactId}`, { 
               headers: {
-                Authorization: `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
               } 
             });
 
@@ -189,7 +189,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
               segment
             };
           } catch (err) {
-            ctx.logger.error(`Got error`, err);
+            ctx.logger.error(`Got error ${err}`, err);
           }
       }));
    });
