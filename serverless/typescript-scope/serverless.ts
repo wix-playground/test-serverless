@@ -182,13 +182,14 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
                 Authorization: `Bearer ${token}`
               } 
             });
-          } catch (err: any) {
+
+            const segment = artifactJson.data.segment;
+            return {
+              artifactId,
+              segment
+            };
+          } catch (err) {
             ctx.logger.error(`Got error`, err);
           }
-          const segment = artifactJson.data.segment;
-          return {
-            artifactId,
-            segment
-          };
       }));
    });
