@@ -21,7 +21,7 @@
     "@types/jsdom": "^16.2.6",
     "@types/node": "^13.11.1",
     "@types/uuid": "^7.0.2",
-    "@wix/serverless-deployer-api": "*",
+    "@wix/serverless-deployer-api": "^1.0.294",
     "@wix/wix-proto-codegen": "*",
     "typescript": "^3.4.5"
   }

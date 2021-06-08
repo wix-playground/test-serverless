@@ -2,6 +2,7 @@ import uuid from 'uuid/v4';
 import {FunctionsBuilder} from '@wix/serverless-api';
 import { checkWorkerConfigs } from './src/WorkerConfigCheck';
 import axios from 'axios';
+import { services } from './src/generated/client/proto-generated';
 
 
 module.exports = (functionsBuilder: FunctionsBuilder) =>
@@ -14,7 +15,8 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
         ctx.logger.info('LogEvery20Seconds called');
       })
      .addWebFunction('GET', '/findSegments', async (ctx, req) => {
-      const artifactIds = [
+        const artifactService = ctx.grpcClient(services.wix.serverless.deployer.api.v2.ProductionArtifacts, 'com.wixpress.platform.serverless-deployer-service');
+        const artifactIds = [
           "com.wixpress.platform.chat-corvid-integration",
           "com.wixpress.platform.chat-delete-status-service",
           "com.wixpress.platform.os-serverless-prod",
@@ -186,10 +188,21 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
             });
 
             const segment = artifactJson.data.segment_id;
-            return {
-              artifactId,
-              segment
-            };
+            if (typeof segment === 'string') {
+              ctx.logger.info(`Setting segment ${segment} for ${artifactId}`);
+              const result = artifactService.update(ctx.aspects, {
+                artifactId,
+                artifact: {
+                  segment
+                },
+                fieldMask: ['segment']
+              });
+              return {
+                artifactId,
+                segment,
+                result
+              };
+            }
           } catch (err) {
             ctx.logger.error(`Got error ${err}`, err);
           }
