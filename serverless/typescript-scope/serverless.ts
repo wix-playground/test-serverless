@@ -175,11 +175,16 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
         ];
       const token = ctx.getConfig('token');
       return await Promise.all(artifactIds.map(async (artifactId) => {
-          const artifactJson = await axios.get(`https://fryingpan.wixpress.com/api/v2/services/${artifactId}`, { 
-            headers: {
-              Authorization: `Bearer ${token}`
-            } 
-          });
+        ctx.logger.info(`Sending request to https://fryingpan.wixpress.com/api/v2/services/${artifactId}`);
+          try {
+            const artifactJson = await axios.get(`https://fryingpan.wixpress.com/api/v2/services/${artifactId}`, { 
+              headers: {
+                Authorization: `Bearer ${token}`
+              } 
+            });
+          } catch (err: any) {
+            ctx.logger.error(`Got error`, err);
+          }
           const segment = artifactJson.data.segment;
           return {
             artifactId,
