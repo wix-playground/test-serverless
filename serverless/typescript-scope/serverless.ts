@@ -179,7 +179,9 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
           try {
             const artifactJson = await axios.get(`https://fryingpan.wixpress.com/api/v2/services/${artifactId}`, { 
               headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
               } 
             });
 
