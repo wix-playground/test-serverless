@@ -4,7 +4,7 @@
   "description": "",
   "main": "serverless.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --skipLibCheck",
     "test": "jest"
   },
   "keywords": [],
