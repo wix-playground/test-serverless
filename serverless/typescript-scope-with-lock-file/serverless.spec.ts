@@ -5,7 +5,7 @@ describe('typescript-scope-with-lock-file', () => {
   const testkit = app('typescript-scope-with-lock-file').beforeAndAfter(20000);
 
   it('should response with hello', async () => {
-    const res = await axios.post(testkit.getUrl(`/hello`), {}, {validateStatus: () => true});
-    expect(res.status).toBe(401);
+    const res = await axios.get(testkit.getUrl(`/hello`));
+    expect(res.status).toBe(200);
   })
 });
