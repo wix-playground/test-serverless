@@ -7,6 +7,7 @@ import { services } from './src/generated/client/proto-generated';
 
 module.exports = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
+      .addStaticContent('static')
       .addWebFunction('GET', '/hello', async () => 'Some: v1 + ' + uuid())
       .addWebFunction('GET', '/check', {timeoutMillis: 900000}, async (ctx, req) => {
         return await checkWorkerConfigs(ctx, req.query.authToken, req.query.offset);
