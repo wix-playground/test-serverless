@@ -1,0 +1,51 @@
+<%
+require 'json'
+
+environment_variables = JSON.parse(databag_config(@artifact_id, 'environment-variables') { '{"envVars": []}' }).fetch('envVars')
+
+container_name = @artifact_id.split('.').last
+
+template = render 'default_deployment'
+
+updated_template = Yutils.process(template) { |helper, stream|
+  helper.patch(stream, 'kind' => 'Deployment') do |obj|
+    main_container = obj['spec']['template']['spec']['containers'].find { |container| container['name'] == container_name }
+    environment_variables.each do |env_var|
+      main_container['env'] << {
+        'name' => env_var['key'],
+        'value' => env_var['value']
+      }
+    end
+
+    obj['spec']['template']['spec']['volumes'] << {
+      'name' => 'shared-configs',
+      'secret' => {
+        'secretName' => shared_kubernetes_secret('libs-releases-local', :artifact_id => 'com.wixpress.serverless.serverless-platformized-apis')
+      },
+    }
+
+    obj['spec']['template']['spec']['initContainers'] << {
+      'name' => 'local-config-processor-shared',
+      'image' => docker_image_url('com.wixpress.system.k8s.local-config-processor', :branch => databag_config('com.wixpress.system.config-processor', 'lcp_branch') {}),
+      'volumeMounts'=> [
+        { 'mountPath' => '/source', 'name' => 'shared-configs' },
+        { 'mountPath' => '/target', 'name' => 'configs' },
+      ],
+      'env' => [
+        { 'name' => 'POD_NAME',  'valueFrom' => { 'fieldRef' => { 'apiVersion' => 'v1', 'fieldPath' => 'metadata.name' }}},
+        { 'name' => 'POD_IP',    'valueFrom' => { 'fieldRef' => { 'apiVersion' => 'v1', 'fieldPath' => 'status.podIP' }}},
+        { 'name' => 'HOST_NAME', 'valueFrom' => { 'fieldRef' => { 'apiVersion' => 'v1', 'fieldPath' => 'spec.nodeName' }}},
+        { 'name' => 'HOST_IP',   'valueFrom' => { 'fieldRef' => { 'apiVersion' => 'v1', 'fieldPath' => 'status.hostIP' }}},
+      ],
+    }
+
+    obj['spec']['template']['spec']['serviceAccountName'] = 'serverless-vault'
+  end
+
+  stream.delete_if { |resource|
+    resource['kind'] == 'Deployment' && resource.dig('metadata', 'annotations', 'cp.system.wix.com/branch') == 'TEST_BED'
+  } if @artifact_id != 'com.wixpress.platform.serverless-runtime-server'
+}
+%>
+
+<%= updated_template %>
