@@ -6,6 +6,6 @@
   "author": "Eugene Obrezkov <ghaiklor@gmail.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "axios": "0.19.2"
+    "axios": "1.6.8"
   }
 }
