@@ -19,7 +19,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
       .addGreyhoundConsumer(topic, async (ctx, message) => {
         const appId: string = message.appId;
         if (appId.startsWith('dwhaas')) {
-          ctx.logger.info(`Got message: ${message}`);
+          ctx.logger.info(`Got message: ${JSON.stringify(message)}`);
         } 
       })
       .addWebFunction('GET', '/findSegments', async (ctx, req) => {
