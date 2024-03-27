@@ -1,9 +1,13 @@
 import uuid from 'uuid/v4';
-import {FunctionsBuilder} from '@wix/serverless-api';
+import {Cluster, ClusteredTopic, FunctionsBuilder} from '@wix/serverless-api';
 import { checkWorkerConfigs } from './src/WorkerConfigCheck';
 import axios from 'axios';
 import { services } from './src/generated/client/proto-generated';
 
+const topic: ClusteredTopic = {
+  name: 'serverless-isolator-jobs',
+  cluster: Cluster.Users,
+}
 
 module.exports = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
@@ -12,10 +16,13 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
       .addWebFunction('GET', '/check', {timeoutMillis: 900000}, async (ctx, req) => {
         return await checkWorkerConfigs(ctx, req.query.authToken, req.query.offset);
       })
-      .addCronFunction('LogEvery20Seconds', '*/20 * * * * *', async (ctx) => {
-        ctx.logger.info('LogEvery20Seconds called');
+      .addGreyhoundConsumer(topic, async (ctx, message) => {
+        const appId: string = message.addId;
+        if (appId.startsWith('dwhaas')) {
+          ctx.logger.info(`Got message: ${message}`);
+        } 
       })
-     .addWebFunction('GET', '/findSegments', async (ctx, req) => {
+      .addWebFunction('GET', '/findSegments', async (ctx, req) => {
         const artifactService = ctx.grpcClient(services.wix.serverless.deployer.api.v2.ProductionArtifacts, 'com.wixpress.platform.serverless-deployer-service');
         const artifactIds = [
           "com.wixpress.platform.chat-corvid-integration",
