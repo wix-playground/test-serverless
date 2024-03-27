@@ -17,7 +17,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
         return await checkWorkerConfigs(ctx, req.query.authToken, req.query.offset);
       })
       .addGreyhoundConsumer(topic, async (ctx, message) => {
-        const appId: string = message.addId;
+        const appId: string = message.appId;
         if (appId.startsWith('dwhaas')) {
           ctx.logger.info(`Got message: ${message}`);
         } 
