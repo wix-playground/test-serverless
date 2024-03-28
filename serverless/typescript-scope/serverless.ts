@@ -9,6 +9,11 @@ const topic: ClusteredTopic = {
   cluster: Cluster.Users,
 }
 
+export const SERVERLESS_APPLICATION_DOMAIN_EVENTS = {
+  name: 'domain_events_wix.serverless.v3.application',
+  cluster: Cluster.Users,
+};
+
 module.exports = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
       .addStaticContent('static')
@@ -21,6 +26,11 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
         if (appId.startsWith('dwhaas')) {
           ctx.logger.info(`Got message: ${JSON.stringify(message)}`);
         } 
+      })
+      .addGreyhoundConsumer(SERVERLESS_APPLICATION_DOMAIN_EVENTS, async (ctx, message) => {
+        if (message.slug === 'deploy_finished_action') {
+          ctx.logger.info(`Got deploy_finished_action: ${JSON.stringify(message)}`);
+        }
       })
       .addWebFunction('GET', '/findSegments', async (ctx, req) => {
         const artifactService = ctx.grpcClient(services.wix.serverless.deployer.api.v2.ProductionArtifacts, 'com.wixpress.platform.serverless-deployer-service');
