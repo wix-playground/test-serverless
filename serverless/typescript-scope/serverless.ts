@@ -43,9 +43,15 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
             'Content-Type': 'application/json'
           } 
         });
-        const fpServices: Array<string> = fpServicesResponse.data.filter((serviceJson) => ['auto_war', 'docker'].includes(serviceJson.artifact_type)).map((serviceJson) => { const match  = serviceJson.id.match(/\.([a-zA-Z0-9/-]+$)/);
-      ctx.logger.info(`Trying to match ${serviceJson.id} and got ${JSON.stringify(result)}`);
-    return match[1]; });
+        const fpServices: Array<string> = fpServicesResponse.data.map((serviceJson) => { const match  = serviceJson.id.match(/\.([a-zA-Z0-9/-]+$)/);
+
+      if (match === null) {
+        ctx.logger.info(`Got no-match ${serviceJson.id}`);
+        return serviceJson.id;
+      } else {
+        return match[1];
+      }
+ });
         const result = fpServices.filter((value) => applications.applicationIds.includes(value));
         ctx.logger.info(`Got conflicting applicationIds: ${JSON.stringify(result)}`)
         return result;
