@@ -32,6 +32,22 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
           ctx.logger.info(`Got deploy_finished_action: ${JSON.stringify(message)}`);
         }
       })
+      .addWebFunction('GET', '/findFpCollisions', async (ctx) => {
+        const applicationService = ctx.grpcClient(services.wix.serverless.deployer.api.v3.Applications, 'com.wixpress.platform.serverless-deployer-service');
+        const applications = await applicationService.list(ctx.aspects);
+        const fpToken = ctx.getConfig('fryingpan-token');
+        const fpServicesResponse = await axios.get(`https://fryingpan.wixpress.com/api/v2/services`, { 
+          headers: {
+            'Authorization': `${fpToken}`,
+            'Accept': '*/*',
+            'Content-Type': 'application/json'
+          } 
+        });
+        const fpServices: Array<string> = fpServicesResponse.data.map((serviceJson) => serviceJson.id.match(/\.([a-zA-Z0-9/-]+$)/)[1]);
+        const result = fpServices.filter((value) => applications.applicationIds.includes(value));
+        ctx.logger.info(`Got conflicting applicationIds: ${JSON.stringify(result)}`)
+        return result;
+      })
       .addWebFunction('GET', '/findSegments', async (ctx, req) => {
         const artifactService = ctx.grpcClient(services.wix.serverless.deployer.api.v2.ProductionArtifacts, 'com.wixpress.platform.serverless-deployer-service');
         const artifactIds = [
