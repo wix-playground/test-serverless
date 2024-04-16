@@ -4,6 +4,12 @@ import { checkWorkerConfigs } from './src/WorkerConfigCheck';
 import axios from 'axios';
 import { services } from './src/generated/client/proto-generated';
 
+import { PremiumGoogleMailboxes } from '@wix/ambassador-premium-google-mailboxes/rpc';
+import type {
+  GetGoogleUsersRequest,
+  GetGoogleUsersResponse,
+} from '@wix/ambassador-premium-google-mailboxes/types';
+
 const topic: ClusteredTopic = {
   name: 'serverless-isolator-jobs',
   cluster: Cluster.Users,
@@ -17,7 +23,15 @@ export const SERVERLESS_APPLICATION_DOMAIN_EVENTS = {
 module.exports = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
       .addStaticContent('static')
-      .addWebFunction('GET', '/hello', async () => 'Some: v1 + ' + uuid())
+      .addWebFunction('GET', '/hello', async (ctx, req) => {
+        try {
+          const mailboxApi = PremiumGoogleMailboxes()
+            .MailboxManagementServiceApi()(ctx.aspects);
+          return await mailboxApi.getGoogleUsers(req.query);
+        } catch (err) {
+          return `Got an error: ${JSON.stringify(err)}`;
+        }
+      })
       .addWebFunction('GET', '/check', {timeoutMillis: 900000}, async (ctx, req) => {
         return await checkWorkerConfigs(ctx, req.query.authToken, req.query.offset);
       })
