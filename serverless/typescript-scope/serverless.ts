@@ -25,7 +25,7 @@ export const SERVERLESS_APPLICATION_DOMAIN_EVENTS = {
 module.exports = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
       .addStaticContent('static')
-      .addWebFunction('GET', '/hello', async (ctx, req) => {
+      .addWebFunction('GET', '/hello', { propagateRemoteErrors: true }, async (ctx, req) => {
         try {
           const mailboxApi = PremiumGoogleMailboxes()
             .MailboxManagementServiceApi()(ctx.aspects);
