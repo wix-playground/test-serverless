@@ -10,6 +10,8 @@ import type {
   GetGoogleUsersResponse,
 } from '@wix/ambassador-premium-google-mailboxes/types';
 
+import { isBusinessError } from '@wix/wix-errors';
+
 const topic: ClusteredTopic = {
   name: 'serverless-isolator-jobs',
   cluster: Cluster.Users,
@@ -29,7 +31,8 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
             .MailboxManagementServiceApi()(ctx.aspects);
           return await mailboxApi.getGoogleUsers(req.query);
         } catch (err) {
-          return `Got an error: ${JSON.stringify(err)}`;
+          ctx.logger.info(`Got an business == ${isBusinessError(err)} error: ${JSON.stringify(err)}`);
+          throw err;
         }
       })
       .addWebFunction('GET', '/check', {timeoutMillis: 900000}, async (ctx, req) => {
