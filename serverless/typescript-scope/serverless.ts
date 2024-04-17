@@ -26,14 +26,9 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
       .addStaticContent('static')
       .addWebFunction('GET', '/hello', { propagateRemoteErrors: true }, async (ctx, req) => {
-        try {
           const mailboxApi = PremiumGoogleMailboxes()
             .MailboxManagementServiceApi()(ctx.aspects);
           return await mailboxApi.getGoogleUsers(req.query);
-        } catch (err) {
-          ctx.logger.info(`Got an business == ${isBusinessError(err)} error: ${JSON.stringify(err)}`);
-          throw err;
-        }
       })
       .addWebFunction('GET', '/check', {timeoutMillis: 900000}, async (ctx, req) => {
         return await checkWorkerConfigs(ctx, req.query.authToken, req.query.offset);
