@@ -270,7 +270,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
     const appsList = await applicationService.list(ctx.aspects, {});
     const pq = new PromiseQueue(5, Number.POSITIVE_INFINITY);
     const promises = appsList.applicationIds.map(async (appId) => {
-      pq.add(() => applicationService.get(ctx.aspects, { applicationId: appId })
+      pq.add(() => applicationService.get(ctx.forBackgroundJob().aspects, { applicationId: appId })
         .then((appInfo) => {
           return {
             applicationId: appId,
@@ -280,6 +280,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
     )});
     return await Promise.all(promises)
       .then((results) => {
+        ctx.cloudStore.keyValueStore.set({ key: 'appsAndCis', value: results});
         return {
           legacy: results.filter((app: any) => JSON.stringify(app.ci) === 'serverlessCi'),
           falcon: results.filter((app: any) => JSON.stringify(app.ci) !== 'serverlessCi'),
