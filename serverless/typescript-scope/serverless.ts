@@ -1,8 +1,8 @@
-import uuid from 'uuid/v4';
+import PromiseQueue from 'promise-queue';
 import {Cluster, ClusteredTopic, FunctionsBuilder} from '@wix/serverless-api';
 import { checkWorkerConfigs } from './src/WorkerConfigCheck';
 import axios from 'axios';
-import { services } from './src/generated/client/proto-generated';
+import { services, responses } from './src/generated/client/proto-generated';
 
 import { PremiumGoogleMailboxes } from '@wix/ambassador-premium-google-mailboxes/rpc';
 import type {
@@ -261,4 +261,28 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
             ctx.logger.error(`Got error ${err}`, err);
           }
       }));
-   });
+   })
+  .addWebFunction('GET', '/appsWithServerlessCi', async (ctx) => {
+    const applicationService = ctx.grpcClient(
+      services.wix.serverless.deployer.api.v3.Applications,
+      'com.wixpress.platform.serverless-deployer-service'
+    );
+    const appsList = await applicationService.list(ctx.aspects, {});
+    const pq = new PromiseQueue(5, Number.POSITIVE_INFINITY);
+    const promises = appsList.applicationIds.map(async (appId) => {
+      pq.add(() => applicationService.get(ctx.aspects, { applicationId: appId })
+        .then((appInfo) => {
+          return {
+            applicationId: appId,
+            ci: appInfo.application.ci,
+          };
+        })
+    )});
+    return await Promise.all(promises)
+      .then((results) => {
+        return {
+          legacy: results.filter((app: any) => JSON.stringify(app.ci) === 'serverlessCi'),
+          falcon: results.filter((app: any) => JSON.stringify(app.ci) !== 'serverlessCi'),
+        }
+      });
+  });
