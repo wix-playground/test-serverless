@@ -268,10 +268,12 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
       'com.wixpress.platform.serverless-deployer-service'
     );
     const appsList = await applicationService.list(ctx.aspects, {});
+    ctx.logger.info(`Got appsList`, appsList);
     const pq = new PromiseQueue(5, Number.POSITIVE_INFINITY);
     const promises = appsList.applicationIds.map(async (appId) => {
       pq.add(() => applicationService.get(ctx.forBackgroundJob().aspects, { applicationId: appId })
         .then((appInfo) => {
+          ctx.logger.info(`Got response for ${appId}`, appInfo);
           return {
             applicationId: appId,
             ci: appInfo.application.ci,
