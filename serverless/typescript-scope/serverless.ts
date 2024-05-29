@@ -270,7 +270,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
     const appsList = await applicationService.list(ctx.aspects, {});
     ctx.logger.info(`Got appsList`, appsList);
     const pq = new PromiseQueue(5, Number.POSITIVE_INFINITY);
-    const promises = appsList.applicationIds.map(async (appId) => {
+    const promises = appsList.applicationIds.map((appId) =>
       pq.add(() => applicationService.get(ctx.forBackgroundJob().aspects, { applicationId: appId })
         .then((appInfo) => {
           ctx.logger.info(`Got response for ${appId}`, appInfo);
@@ -279,7 +279,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
             ci: appInfo.application.ci,
           };
         })
-    )});
+    ));
     return await Promise.all(promises)
       .then((results) => {
         ctx.logger.error(`Got results`, results);
