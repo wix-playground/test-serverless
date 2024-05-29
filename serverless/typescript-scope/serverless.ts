@@ -277,6 +277,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
           return {
             applicationId: appId,
             ci: appInfo.application.ci,
+            yoshi: appInfo.application.tags.some((tag) => tag === responses.wix.serverless.deployer.api.v3.Application.Tag.YOSHI),
           };
         })
     ));
@@ -284,9 +285,15 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
       .then((results) => {
         ctx.logger.error(`Got results`, results);
         ctx.cloudStore.keyValueStore.set({ key: 'appsAndCis', value: results});
+        const falcon = results.filter((app: any) => typeof app.ci.falcon === 'object');
+        const legacy = results.filter((app: any) => typeof app.ci.falcon !== 'object');
+        const yoshi = results.filter((app: any) => app.yoshi);
         return {
-          legacy: results.filter((app: any) => JSON.stringify(app.ci) === 'serverlessCi'),
-          falcon: results.filter((app: any) => JSON.stringify(app.ci) !== 'serverlessCi'),
+          legacySize: legacy.length,
+          falconSize: falcon.length,
+          yoshiSize: yoshi.length,
+          legacy,
+          falcon,
         }
       });
   });
