@@ -282,6 +282,7 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
     )});
     return await Promise.all(promises)
       .then((results) => {
+        ctx.logger.error(`Got results`, results);
         ctx.cloudStore.keyValueStore.set({ key: 'appsAndCis', value: results});
         return {
           legacy: results.filter((app: any) => JSON.stringify(app.ci) === 'serverlessCi'),
