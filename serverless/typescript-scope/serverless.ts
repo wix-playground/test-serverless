@@ -24,6 +24,12 @@ export const SERVERLESS_APPLICATION_DOMAIN_EVENTS = {
 
 module.exports = (functionsBuilder: FunctionsBuilder) =>
     functionsBuilder
+      .withSecurityOptions({
+        boAuth: {
+          redirect: true,
+          forbid: false,
+        }
+      })
       .addStaticContent('static')
       .addWebFunction('GET', '/hello', { propagateRemoteErrors: true }, async (ctx, req) => {
           const mailboxApi = PremiumGoogleMailboxes()
