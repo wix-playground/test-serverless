@@ -280,10 +280,12 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
       pq.add(() => applicationService.get(ctx.forBackgroundJob().aspects, { applicationId: appId })
         .then((appInfo) => {
           ctx.logger.info(`Got response for ${appId}`, appInfo);
+          const yoshi = appInfo.application.tags.some((tag) => tag === responses.wix.serverless.deployer.api.v3.Application.Tag.YOSHI)
+        || /yoshi-serverless\d*$/.test(appInfo.application.codeSource.github.repo)
           return {
             applicationId: appId,
             ci: appInfo.application.ci,
-            yoshi: appInfo.application.tags.some((tag) => tag === responses.wix.serverless.deployer.api.v3.Application.Tag.YOSHI),
+            yoshi,
           };
         })
     ));
