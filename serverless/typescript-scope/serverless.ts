@@ -268,6 +268,10 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
           }
       }));
    })
+  .addWebFunction('GET', '/appsWithServerlessCiCached', async (ctx) => {
+    const appsInfo = await ctx.cloudStore.keyValueStore.get('appsAndCis');
+    return appsInfo;
+  })
   .addWebFunction('GET', '/appsWithServerlessCi', async (ctx) => {
     const applicationService = ctx.grpcClient(
       services.wix.serverless.deployer.api.v3.Applications,
