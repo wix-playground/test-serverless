@@ -269,8 +269,14 @@ module.exports = (functionsBuilder: FunctionsBuilder) =>
       }));
    })
   .addWebFunction('GET', '/appsWithServerlessCiCached', async (ctx) => {
-    const appsInfo = await ctx.cloudStore.keyValueStore.get('appsAndCis');
-    return appsInfo;
+    const appsInfo = (await ctx.cloudStore.keyValueStore.get('appsAndCis')) as { key: string, value: {
+      applicationId: string;
+      ci: responses.wix.serverless.deployer.api.v3.Ci;
+      yoshi: boolean;
+    }[]};
+    return appsInfo.value
+      .filter((app) => app.yoshi === false && typeof app.ci.falcon !== 'object')
+      .map((app) => app.applicationId);
   })
   .addWebFunction('GET', '/appsWithServerlessCi', async (ctx) => {
     const applicationService = ctx.grpcClient(
