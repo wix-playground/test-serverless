@@ -25,6 +25,7 @@
     "@types/promise-queue": "^2.2.3",
     "@types/uuid": "^7.0.2",
     "@wix/com.wixpress.p13n.protos-common-proto": "^1.17.0",
+    "@wix/serverless-cli": "^1.324.0",
     "@wix/serverless-deployer-api": "^1.0.294",
     "@wix/wix-proto-codegen": "*",
     "typescript": "^3.4.5"
