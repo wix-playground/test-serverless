@@ -1,4 +1,4 @@
-const {getUserSites} = require('ambassador-conflict-test');
+const {getUserSites} = require('@wix/ambassador-conflict-test');
 
 
 module.exports = (functionsBuilder) => functionsBuilder
